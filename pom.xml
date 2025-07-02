@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>org.wso2.identity.customer.data.management</groupId>
+    <artifactId>components</artifactId>
+    <version>1.0-SNAPSHOT</version>
+    <packaging>pom</packaging>
+    <name>WSO2 Identity CDM Parent</name>
+
+    <modules>
+        <module>components/org.wso2.identity.customer.data.management.event.handler</module>
+        <module>components/org.wso2.identity.customer.data.management.event.listener</module>
+    </modules>
+
+    <properties>
+        <maven.compiler.source>1.8</maven.compiler.source>
+        <maven.compiler.target>1.8</maven.compiler.target>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+
+        <!-- Maven Plugin Versions -->
+        <maven.compiler.plugin.version>2.0</maven.compiler.plugin.version>
+        <maven.bundle.plugin.version>3.2.0</maven.bundle.plugin.version>
+
+        <!-- Apache and WSO2 Versions -->
+        <apache.felix.scr.ds.annotations.version>1.2.4</apache.felix.scr.ds.annotations.version>
+        <commons.logging.version>1.2</commons.logging.version>
+
+        <!-- OSGi -->
+        <equinox.osgi.services.version>3.5.100.v20160504-1419</equinox.osgi.services.version>
+        <osgi.framework.imp.pkg.version.range>[1.7.0, 2.0.0)</osgi.framework.imp.pkg.version.range>
+        <osgi.service.component.imp.pkg.version.range>[1.2.0, 2.0.0)</osgi.service.component.imp.pkg.version.range>
+        <commons-logging.osgi.version.range>[1.2,2.0)</commons-logging.osgi.version.range>
+
+        <!-- Carbon Identity Framework Version -->
+        <carbon.identity.framework.version>7.8.250</carbon.identity.framework.version>
+        <carbon.identity.framework.imp.pkg.version.range>[5.20.211, 8.0.0)
+        </carbon.identity.framework.imp.pkg.version.range>
+    </properties>
+
+    <repositories>
+        <repository>
+            <id>wso2-nexus</id>
+            <name>WSO2 org.wso2.identity.cdm.event.hanlder.internal Repository</name>
+            <url>https://maven.wso2.org/nexus/content/groups/wso2-public/</url>
+        </repository>
+    </repositories>
+</project>

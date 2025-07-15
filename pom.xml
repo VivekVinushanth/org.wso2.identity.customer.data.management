@@ -12,7 +12,9 @@
 
     <modules>
         <module>components/org.wso2.identity.customer.data.management.event.handler</module>
+        <module>components/org.wso2.identity.customer.data.management.auth.handler</module>
         <module>components/org.wso2.identity.customer.data.management.event.listener</module>
+        <module>components/org.wso2.identity.customer.data.management.auth.listener</module>
     </modules>
 
     <properties>

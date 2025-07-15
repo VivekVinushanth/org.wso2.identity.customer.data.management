@@ -11,9 +11,9 @@
         <relativePath>../../pom.xml</relativePath>
     </parent>
 
-    <artifactId>org.wso2.identity.customer.data.management.event.listener</artifactId>
+    <artifactId>org.wso2.identity.customer.data.management.auth.handler</artifactId>
     <packaging>bundle</packaging>
-    <name>WSO2 Identity CDM Listener</name>
+    <name>WSO2 Identity CDM Auth Handler</name>
 
     <build>
         <plugins>
@@ -37,19 +37,25 @@
                     <instructions>
                         <Bundle-SymbolicName>${project.artifactId}</Bundle-SymbolicName>
                         <Bundle-Name>${project.artifactId}</Bundle-Name>
-                        <Bundle-Description>WSO2 Identity CDM Custom Event Listener Bundle</Bundle-Description>
+                        <Bundle-Description>WSO2 Identity CDM Custom Event Handler Bundle</Bundle-Description>
                         <Private-Package>
-                            org.wso2.identity.cdm.event.listener.internal
+                            org.wso2.identity.cdm.auth.handler.internal
                         </Private-Package>
                         <Export-Package>
-                            !org.wso2.identity.cdm.event.listener.internal,
-                            org.wso2.identity.cdm.event.listener.*
+                            !org.wso2.identity.cdm.auth.handler.internal,
+                            org.wso2.identity.cdm.auth.handler.*
                         </Export-Package>
                         <Import-Package>
                             org.osgi.framework;version="${osgi.framework.imp.pkg.version.range}",
                             org.osgi.service.component;version="${osgi.service.component.imp.pkg.version.range}",
                             org.apache.commons.logging;version="${commons-logging.osgi.version.range}",
-                            org.wso2.carbon.identity.event.*;version="${carbon.identity.framework.imp.pkg.version.range}"
+                            org.wso2.carbon.identity.event.*;version="${carbon.identity.framework.imp.pkg.version.range}",
+                            org.wso2.carbon.identity.application.authentication.framework.config; version="${carbon.identity.framework.imp.pkg.version.range}",
+                            org.wso2.carbon.identity.application.authentication.framework.config.model; version="${carbon.identity.framework.imp.pkg.version.range}",
+                            org.wso2.carbon.identity.application.authentication.framework.context; version="${carbon.identity.framework.imp.pkg.version.range}",
+                            org.wso2.carbon.identity.application.authentication.framework.exception ;version="${carbon.identity.framework.imp.pkg.version.range}",
+                            org.wso2.carbon.identity.application.authentication.framework.handler.request; version="${carbon.identity.framework.imp.pkg.version.range}",
+                            org.wso2.carbon.identity.application.authentication.framework.model; version="${carbon.identity.framework.imp.pkg.version.range}"
                         </Import-Package>
                         <DynamicImport-Package>*</DynamicImport-Package>
                     </instructions>
@@ -62,6 +68,11 @@
         <dependency>
             <groupId>org.wso2.carbon.identity.framework</groupId>
             <artifactId>org.wso2.carbon.identity.event</artifactId>
+            <version>${carbon.identity.framework.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.wso2.carbon.identity.framework</groupId>
+            <artifactId>org.wso2.carbon.identity.application.authentication.framework</artifactId>
             <version>${carbon.identity.framework.version}</version>
         </dependency>
         <dependency>

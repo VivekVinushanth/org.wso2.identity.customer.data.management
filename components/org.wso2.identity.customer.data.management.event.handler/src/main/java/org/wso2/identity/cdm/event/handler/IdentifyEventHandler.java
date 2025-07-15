@@ -96,32 +96,35 @@ public class IdentifyEventHandler extends AbstractEventHandler {
                 @SuppressWarnings("unchecked")
                 Map<String, Object> userClaims = (Map<String, Object>) properties.get("USER_CLAIMS");
 
-                for (Map.Entry<String,Object> entry : userClaims.entrySet()) {
-                    System.out.println("Key: " + entry.getKey() + ", Value: " + entry.getValue() + ", Type: " + entry.getValue().getClass());
+                if (userClaims != null) {
+
+
+                    for (Map.Entry<String, Object> entry : userClaims.entrySet()) {
+                        System.out.println("Key: " + entry.getKey() + ", Value: " + entry.getValue() + ", Type: " + entry.getValue().getClass());
+                    }
+
+                    if (userClaims.isEmpty()) {
+                        throw new IdentityEventException("No USER_CLAIMS found in event properties.");
+                    }
+
+                    String userId = properties.get("USER_ID").toString();
+
+                    // Filter userClaims to only include keys that start with "http://wso2.org/claims/"
+                    Map<String, Object> filteredUserClaims = userClaims.entrySet().stream()
+                            .filter(entry -> entry.getKey().startsWith("http://wso2.org/claims/"))
+                            .collect(HashMap::new, (m, e) -> m.put(e.getKey(), e.getValue()), HashMap::putAll);
+
+
+                    Map<String, Object> profileSyncPayload = new HashMap<>();
+                    profileSyncPayload.put("userId", userId);
+                    profileSyncPayload.put("claims", new HashMap<>(filteredUserClaims));
+                    profileSyncPayload.put("tenantId", properties.get("tenant-domain"));
+
+
+                    CDMClient.triggerIdentityDataSync(eventName, profileSyncPayload);
+
+                    System.out.println("Profile sync pushed successfully for userId: " + userId);
                 }
-
-                if (userClaims.isEmpty()) {
-                    throw new IdentityEventException("No USER_CLAIMS found in event properties.");
-                }
-
-                String userId = properties.get("USER_ID").toString();
-
-                // Filter userClaims to only include keys that start with "http://wso2.org/claims/"
-                Map<String, Object> filteredUserClaims = userClaims.entrySet().stream()
-                        .filter(entry -> entry.getKey().startsWith("http://wso2.org/claims/"))
-                        .collect(HashMap::new, (m, e) -> m.put(e.getKey(), e.getValue()), HashMap::putAll);
-
-
-
-                Map<String, Object> profileSyncPayload = new HashMap<>();
-                profileSyncPayload.put("userId", userId);
-                profileSyncPayload.put("claims", new HashMap<>(filteredUserClaims));
-                profileSyncPayload.put("tenantId", properties.get("tenant-domain"));
-
-
-                CDMClient.triggerIdentityDataSync(eventName, profileSyncPayload);
-
-                System.out.println("Profile sync pushed successfully for userId: " + userId);
 
             } catch (Exception e) {
                 throw new IdentityEventException("Error handling event for CDM sync.", e);

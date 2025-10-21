@@ -19,6 +19,7 @@
 package org.wso2.identity.cdm.auth.listener;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.apache.commons.lang.StringUtils;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.StringEntity;
@@ -29,16 +30,19 @@ import java.util.Map;
 
 public class CDMClient {
 
-    private static final String PROFILE_SYNC_API = "http://localhost:8900/api/v1/profiles/sync";
-    private static final String PROFILE_API = "http://localhost:8900/api/v1/profiles";
+    private static String PROFILE_SYNC_API = "http://localhost:8900/t/{tenant}/api/v1/profiles/sync";
+    private static String PROFILE_API = "http://localhost:8900/t/{tenant}/api/v1/profiles";
 
 
-    public static void triggerIdentityDataSync(String event, Map<String, Object> payload) throws Exception {
+    public static void triggerIdentityDataSync(String event, Map<String, Object> payload, String tenant) throws Exception {
 
         ObjectMapper mapper = new ObjectMapper();
         payload.put("event", event);
         String json = mapper.writeValueAsString(payload);
 
+         if (StringUtils.isNotEmpty(tenant)) {
+             PROFILE_SYNC_API = PROFILE_SYNC_API.replace("{tenant}", tenant);
+         }
         // Log request details
         System.out.println("URL: " + PROFILE_SYNC_API);
         System.out.println("Payload: " + json);

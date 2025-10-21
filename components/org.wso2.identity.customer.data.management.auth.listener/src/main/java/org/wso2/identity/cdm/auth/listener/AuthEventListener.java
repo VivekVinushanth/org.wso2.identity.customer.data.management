@@ -30,7 +30,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * This class contains the implementation of the tenant management listener.  This listener will be used to trigger the schem creation sync
+ * This class contains the implementation of the Authentication event listener.
+ * This handles authentication success events.
  */
 public class AuthEventListener extends AbstractEventHandler {
 
@@ -64,8 +65,8 @@ public class AuthEventListener extends AbstractEventHandler {
                     profileSyncPayload.put("profileId", cookieValue);
                     profileSyncPayload.put("userId", userId);
                     profileSyncPayload.put("tenantId", context.getProperty("user-tenant-domain"));
-
-                    CDMClient.triggerIdentityDataSync(event.getEventName(), profileSyncPayload);
+                    String tenant = context.getTenantDomain();
+                    CDMClient.triggerIdentityDataSync(event.getEventName(), profileSyncPayload, tenant);
                 }
                 catch (UserIdNotFoundException e) {
                     throw new RuntimeException(e);

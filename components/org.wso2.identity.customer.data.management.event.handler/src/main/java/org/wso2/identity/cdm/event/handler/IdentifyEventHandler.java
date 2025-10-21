@@ -75,13 +75,14 @@ public class IdentifyEventHandler extends AbstractEventHandler {
                 profileSyncPayload.put("userId", userId);
                 profileSyncPayload.put("claims", new HashMap<>(filteredUserClaims));
                 profileSyncPayload.put("tenantId", properties.get("tenant-domain"));
+                String tenant = (String) properties.get("tenant-domain");
 
                 if (profileId == null || profileId.isEmpty()) {
 //                    System.out.println("No profileId found. Skipping CDM sync.");
-                    CDMClient.triggerProfileSync("POST_ADD_USER", profileSyncPayload);
+                    CDMClient.triggerProfileSync("POST_ADD_USER", profileSyncPayload, tenant);
                     return;
                 } else {
-                    CDMClient.triggerIdentityDataSync(eventName, profileSyncPayload);
+                    CDMClient.triggerIdentityDataSync(eventName, profileSyncPayload, tenant);
                 }
 
                 System.out.println("Profile sync pushed successfully for profileId: " + profileId);
@@ -119,9 +120,10 @@ public class IdentifyEventHandler extends AbstractEventHandler {
                     profileSyncPayload.put("userId", userId);
                     profileSyncPayload.put("claims", new HashMap<>(filteredUserClaims));
                     profileSyncPayload.put("tenantId", properties.get("tenant-domain"));
+                    String tenant = (String) properties.get("tenant-domain");
 
 
-                    CDMClient.triggerIdentityDataSync(eventName, profileSyncPayload);
+                    CDMClient.triggerIdentityDataSync(eventName, profileSyncPayload, tenant);
 
                     System.out.println("Profile sync pushed successfully for userId: " + userId);
                 }
@@ -140,7 +142,8 @@ public class IdentifyEventHandler extends AbstractEventHandler {
             Map<String, Object> profileSyncPayload = new HashMap<>();
             profileSyncPayload.put("userId", userId);
             profileSyncPayload.put("tenantId", properties.get("tenant-domain"));
-            CDMClient.triggerIdentityDataSync(eventName, profileSyncPayload);
+            String tenant = (String) properties.get("tenant-domain");
+            CDMClient.triggerIdentityDataSync(eventName, profileSyncPayload, tenant);
             return;
             } catch (Exception e) {
                 throw new RuntimeException(e);
